@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yi伴读</title>
+    <!-- 引入Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- 引入Font Awesome -->
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    
+    <!-- 配置Tailwind自定义颜色和字体 -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#0F52BA',
+                        secondary: '#5B8FB9',
+                        neutral: '#333333',
+                        light: '#F5F5F5'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                        serif: ['Georgia', 'Cambria', 'serif'],
+                        mono: ['Courier New', 'monospace']
+                    },
+                }
+            }
+        }
+    </script>
+    
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .content-auto {
+                content-visibility: auto;
+            }
+            .focus-visible-outline {
+                @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2;
+            }
+            .skip-link {
+                @apply absolute top-0 left-0 -translate-y-full bg-primary text-white px-4 py-2 z-50 transition-transform duration-300 focus:translate-y-0;
+            }
+            .article-prose {
+                @apply max-w-4xl mx-auto text-lg leading-relaxed;
+            }
+            .article-prose p {
+                @apply mb-6;
+            }
+            .article-prose h2 {
+                @apply text-2xl md:text-3xl font-bold mt-10 mb-6 text-primary;
+            }
+            .article-prose h3 {
+                @apply text-xl md:text-2xl font-semibold mt-8 mb-4 text-primary/90;
+            }
+            .article-prose blockquote {
+                @apply border-l-4 border-secondary pl-4 italic my-6 text-neutral/80;
+            }
+            .font-serif-mode {
+                font-family: Georgia, Cambria, serif !important;
+            }
+            .font-sans-mode {
+                font-family: Inter, system-ui, sans-serif !important;
+            }
+            .font-mono-mode {
+                font-family: Courier New, monospace !important;
+            }
+            /* 满屏文字适配样式 */
+            .full-width-content {
+                @apply w-full max-w-none;
+            }
+        }
+    </style>
+</head>
+<body class="bg-light text-neutral font-sans-mode">
+    <!-- 无障碍跳转链接 -->
+    <a href="#main-content" class="skip-link">跳转到主要内容</a>
+
+    <div>
+        <!-- 无障碍控制工具栏 -->
+        <div class="flex flex-wrap gap-2 md:gap-3 items-center justify-center p-4">
+            <div class="bg-gray-100 p-1 rounded-md flex">
+                <button id="font-decrease" class="p-2 rounded hover:bg-gray-200 focus-visible-outline" aria-label="减小字体">
+                    <i class="fa fa-font" aria-hidden="true"></i> A-
+                </button>
+                <button id="font-reset" class="p-2 rounded hover:bg-gray-200 focus-visible-outline" aria-label="重置字体大小">
+                    <i class="fa fa-refresh" aria-hidden="true"></i>
+                </button>
+                <button id="font-increase" class="p-2 rounded hover:bg-gray-200 focus-visible-outline" aria-label="增大字体">
+                    <i class="fa fa-font" aria-hidden="true"></i> A+
+                </button>
+            </div>
+            
+            <div class="bg-gray-100 p-1 rounded-md flex">
+                <button id="font-sans" class="p-2 rounded hover:bg-gray-200 focus-visible-outline" aria-label="无衬线字体">
+                    <i class="fa fa-font" aria-hidden="true"></i> 无衬线
+                </button>
+                <button id="font-serif" class="p-2 rounded hover:bg-gray-200 focus-visible-outline" aria-label="衬线字体">
+                    <i class="fa fa-font" aria-hidden="true"></i> 衬线
+                </button>
+                <button id="font-mono" class="p-2 rounded hover:bg-gray-200 focus-visible-outline" aria-label="等宽字体">
+                    <i class="fa fa-font" aria-hidden="true"></i> 等宽
+                </button>
+            </div>
+            
+            <button id="read-aloud" class="p-2 bg-gray-100 rounded hover:bg-gray-200 focus-visible-outline" aria-label="开始朗读文章">
+                <i class="fa fa-volume-up" aria-hidden="true"></i>
+            </button>
+            
+            <button id="stop-reading" class="p-2 bg-gray-100 rounded hover:bg-gray-200 focus-visible-outline hidden" aria-label="停止朗读">
+                <i class="fa fa-volume-off" aria-hidden="true"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- 主要内容区域（满屏文字布局） -->
+    <main id="main-content" class="container mx-auto px-4 py-8 full-width-content" role="main">
+        <article class="bg-white rounded-lg shadow-sm p-6 md:p-10">
+            <div id="article-content" class="article-prose">
+                
+
+                <h3>商业:如何强制储蓄？</h3>
+                    
+                <p>
+
+
+这个时代，人人都在谈理财谈抄底跑通货膨胀。想靠自己的聪明才智以及幸运加持狠狠割一波资本主义的韭菜。可对于普通人而言，唯独钱这件事，偏偏不是「理」出来的，更多可能是自己成为什么样的人后自然而然衍生的副产品。
+
+对于没怎么接触过股票原油动力煤的朋友们，其实就以现在银行理财给出来那三瓜两籽的收益率，只要能控制住不随便剁手，不随便买一堆没用的东西，已经算是理财了。
+
+所以在当前这个阶段，在如何与金钱相处的这件事上，自己又回到如何强制储蓄，如何积累本金的问题上。目前以个人经验，将整个储蓄过程分成 4 个步骤，每一个步骤都旨在缩小财富的出水口。
+
+精简账户：简化账户数量，为后续每天的财务管理降低操作上的阻碍
+
+关闭花呗：破除提前消费，吃土豆还是鱼子酱请遵从个人实际情况
+
+收入切割：把收入切割成几个部分，不能动的钱无论如何也不能动
+
+独立预算：日常生活开销以「周维度」进行预算规划，有意识、有计划消费
+
+
+精简账户
+
+强制储蓄的第一步是知道自己当前有多少钱，这是非常基础但也非常重要的一步。需要花点时间梳理一下自己钱都散落在哪些地方。我会找一个空余的桌子，把自己所有的银行卡、信用卡全部摆放在桌上。
+
+接下来的整理，就像玩消消乐一样，分类、合并、消除三步走。想想这张卡是不是已经很久没用了，甚至不知道里面有没有钱。这个阶段会一张一张逐次查询。个人建议同样功能的资金账户保留 1 张卡，持有的银行卡总量最多不超过 3 张，其它的找个时间注销。最大限度简化账户数量，可以为后续财务管理降低操作成本与选择阻碍。
+
+以下是个人对资金账户的划分与实际应用
+
+日常账户：承担房贷、水电、通讯、饮食等生活开销
+
+储蓄账户：我的法克基金。每月固定存入，无论如何都不会动用的一笔钱
+
+投资账户：利用支付宝理财，做一些基金定投
+
+信用账户：包括花呗、白条、信用卡等 
+
+目前我用圈子账本进行记账，整体来说比较方便，能非常直观了解当前账户、借贷以及人情支出的情况。同时在这个层面上，为了减少管理难度，我一般不会在微信、支付宝上放置金额，偶尔会用它们处理与朋友的资金往来，但这部分的钱不会单独维护，会当成额外奖励。金额如果较大则会提取到日常账户中做生活开销。
+
+关闭花呗
+
+第二步是破除消费借贷的循环。
+
+现在 App 的开屏页清一色被雅诗兰黛、戴森、Jeep自由光攻陷，这类广告的旺盛很难说是社会真正的富足，看起来更像一个精巧隐秘的结构不断催生人们的欲望。消费主义需要让我们相信，你就是你所购买的商品。然后贴心给人们准备好白条、花呗、小贷。不遗余力的吸引你消费、你借贷，不断循环，不断上瘾。
+
+要破除这个循环，只能砍断链路的其中一部分。躲避广告不是一件容易的事，但是否还要提前消费，这却是你说了算。你需要下定决心，把花呗、信用卡里所有的欠款补上。不要想着下个月，如果认为自己无法驾驭这些借贷产品，那么最好的方法是应该立刻关掉它们。
+
+另外我有些的朋友，会特意打开花呗用于生活花销，通过时间差赚取其它理财产品的收益。其实我不建议这么做，除非你每月支出特别大，否则为了几杯咖啡钱往往得不偿失。
+
+收入切割
+
+每当我获得一笔的新收入，会将收入切割成几个部分，分别放进不同账户：
+
+收入的 50%——放进储蓄账户，利用银行定期理财产品，强制避免流动
+
+收入的 40%——放进日常账户，利用 Pennies 的预算做日常资金规划
+
+收入的 10%——放进投资账户，利用支付宝的理财服务进行基金定投
+
+本阶段主要也是利用圈子账本记录。每当获得一笔的新的收入，会按比例将收入计进圈子账本上不同的账户。背后的操作则如图中所说，50% 的收入会集中购买银行中长期理财，10% 进入基金定投，40% 放进日常账户用作生活开销。
+
+个人当前阶段主要以积累本金为主，开源很重要，但宽进窄出的积累对于财富增长也能起到加速作用。
+
+独立预算
+
+在上面的步骤，我已经得到日常所需的生活资金。接下来就是在这笔资金基础上增加「预算」来管控与计划每天消费。
+
+这里建议按「周维度」设定预算。之前我按月预算，往往出现月初就用完整月预算的情况，导致后续消费全部超出。这种不受掌控的感觉会导致很强的挫败感，计划也很难进行。后面试着把预算调整成「周维度」，颗粒度细化后变得更容易执行。一是可以较为合理的评估每周资金，第二是周预算会比月预算带给人更多正向反馈。
+
+圈子账本也有预算功能，但我不建议大家在那里面做规划。因为太容易看到你所有的账户，如果你超支，那么你很有可能直接切换另一个账户源，导致你的收入切割与预算规划形同虚设。这里我推荐 Pennies，只能看到预算部分的金额，每记录一笔它也会及时向你反馈预算包还剩多少钱，以及今天剩余可用多少钱。圈子账本应该像母体一样，只记录预算整体金额，具体的花销由 Pennies 完成。
+
+很多人会担心很多费用都是按月付，比如网费话费等，周预算颗粒度太小会不会频繁打乱计划。其实不用太担心，Pennies 的滚存功能可以将本周超出的费用或节余的费用自动存入下周，在设置预算时，把月账单分摊进每周预算内即可，你不需要强制每周预算不能超出一分钱，而是在宏观上减少不必要消费。
+
+关于记账的建议
+
+在强制储蓄整个过程中，每一笔收支的记录都贯穿全局。可能还有很多人记账断断续续或不停更换记账应用。我的想法其实是不用太纠结 UI 与功能，只要有简单的账户概念就行。另外在这里给几点记账小建议：
+
+减少类别：可以减少记账项目的类别，比如将水电、通讯、话费与日用品等分类合计为「日用」一个类别，记账时可加快记账速度，也方便维护
+
+当天补帐：记账时，无需花一笔记一笔，但最好当天的开支当天记录。如果中途拖延几天，后面大概率会断掉
+
+定时对账：同样的，记账时也不需要太在意每笔支出是否准确到小数点，可以设置固定时间定期核账，补充漏计错计的金额，顺便也是复盘的机会
+
+总之，记账不用事无巨细，账户类别与金额过于精确反而徒增上手门槛。记账目的不是记账，只要能更有意识的对待金钱，这就已经达到记账的效果。
+
+写在最后
+
+如果一个人还需要通过去西藏、去云南找自己，那离真正的自己还太远；如果一个人需要通过消费买买买找快乐，那多巴胺分泌结束的那刻，可能只会得到更多空虚。
+
+</p>
+   <h3>愿好书陪伴你成长</h3>
+                    
+               
+            </div>
+        </article>
+    </main>
+
+    <!-- 无障碍通知区域 (供屏幕阅读器 announce 使用) -->
+    <div id="a11y-announcer" aria-live="polite" class="sr-only"></div>
+
+    <!-- 无障碍功能JavaScript -->
+    <script>
+        // 初始化页面设置
+        document.addEventListener('DOMContentLoaded', function() {
+            loadUserPreferences();
+        });
+        
+        // 字体大小调整功能
+        let currentFontSize = 100; // 百分比
+        
+        document.getElementById('font-increase').addEventListener('click', () => {
+            if (currentFontSize < 160) {
+                currentFontSize += 10;
+                applyFontSize();
+                announceChange(`字体已增大到${currentFontSize}%`);
+            }
+        });
+        
+        document.getElementById('font-decrease').addEventListener('click', () => {
+            if (currentFontSize > 70) {
+                currentFontSize -= 10;
+                applyFontSize();
+                announceChange(`字体已减小到${currentFontSize}%`);
+            }
+        });
+        
+        document.getElementById('font-reset').addEventListener('click', () => {
+            currentFontSize = 100;
+            applyFontSize();
+            announceChange('字体大小已重置为默认值');
+        });
+        
+        function applyFontSize() {
+            document.documentElement.style.fontSize = `${currentFontSize}%`;
+            saveUserPreference('fontSize', currentFontSize);
+        }
+        
+        // 字体类型切换
+        document.getElementById('font-sans').addEventListener('click', () => {
+            setFontFamily('sans');
+            announceChange('已切换为无衬线字体');
+        });
+        
+        document.getElementById('font-serif').addEventListener('click', () => {
+            setFontFamily('serif');
+            announceChange('已切换为衬线字体');
+        });
+        
+        document.getElementById('font-mono').addEventListener('click', () => {
+            setFontFamily('mono');
+            announceChange('已切换为等宽字体');
+        });
+        
+        function setFontFamily(type) {
+            document.body.classList.remove('font-sans-mode', 'font-serif-mode', 'font-mono-mode');
+            document.body.classList.add(`font-${type}-mode`);
+            saveUserPreference('fontFamily', type);
+        }
+        
+        // 文本朗读功能
+        let speechSynthesis = window.speechSynthesis;
+        let currentUtterance = null;
+        let isReading = false;
+        let readingProgress = 0;
+        let articleParagraphs = [];
+        
+        document.getElementById('read-aloud').addEventListener('click', startReading);
+        document.getElementById('stop-reading').addEventListener('click', stopReading);
+        
+        function startReading() {
+            articleParagraphs = Array.from(document.querySelectorAll('#article-content p, #article-content h2, #article-content h3'));
+            
+            if (articleParagraphs.length === 0) {
+                announceChange('没有可朗读的内容');
+                return;
+            }
+            
+            stopReading();
+            isReading = true;
+            document.getElementById('read-aloud').classList.add('hidden');
+            document.getElementById('stop-reading').classList.remove('hidden');
+            readNextParagraph();
+            announceChange('开始朗读文章内容');
+        }
+        
+        function readNextParagraph() {
+            if (readingProgress >= articleParagraphs.length) {
+                stopReading();
+                announceChange('文章朗读已完成');
+                return;
+            }
+            
+            const paragraph = articleParagraphs[readingProgress];
+            highlightReadingParagraph(readingProgress);
+            
+            currentUtterance = new SpeechSynthesisUtterance(paragraph.textContent.trim());
+            currentUtterance.lang = 'zh-CN';
+            currentUtterance.rate = 0.9;
+            
+            currentUtterance.onend = function() {
+                readingProgress++;
+                readNextParagraph();
+            };
+            
+            speechSynthesis.speak(currentUtterance);
+        }
+        
+        function highlightReadingParagraph(index) {
+            articleParagraphs.forEach(p => p.classList.remove('bg-yellow-100'));
+            if (index < articleParagraphs.length) {
+                articleParagraphs[index].classList.add('bg-yellow-100');
+                articleParagraphs[index].scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        }
+        
+        function stopReading() {
+            if (isReading) {
+                speechSynthesis.cancel();
+                currentUtterance = null;
+                isReading = false;
+                articleParagraphs.forEach(p => p.classList.remove('bg-yellow-100'));
+                document.getElementById('read-aloud').classList.remove('hidden');
+                document.getElementById('stop-reading').classList.add('hidden');
+                announceChange('已停止朗读');
+            }
+        }
+        
+        // 辅助函数：向屏幕阅读器发布通知
+        function announceChange(message) {
+            const announcer = document.getElementById('a11y-announcer');
+            announcer.textContent = '';
+            setTimeout(() => {
+                announcer.textContent = message;
+            }, 100);
+        }
+        
+        // 保存用户偏好设置到localStorage
+        function saveUserPreference(key, value) {
+            const preferences = JSON.parse(localStorage.getItem('a11yPreferences') || '{}');
+            preferences[key] = value;
+            localStorage.setItem('a11yPreferences', JSON.stringify(preferences));
+        }
+        
+        // 加载用户偏好设置
+        function loadUserPreferences() {
+            const preferences = JSON.parse(localStorage.getItem('a11yPreferences') || '{}');
+            
+            if (preferences.fontSize) {
+                currentFontSize = preferences.fontSize;
+                applyFontSize();
+            }
+            
+            if (preferences.fontFamily) {
+                setFontFamily(preferences.fontFamily);
+            }
+        }
+    </script>
+</body>
+</html>
