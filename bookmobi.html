@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>查找Yi图书馆mobi格式</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft YaHei", sans-serif;
+        }
+
+        body {
+            background-color: #f5f7fa;
+            padding: 20px;
+        }
+
+        .search-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .title {
+            text-align: center;
+            color: #333;
+            margin-bottom: 25px;
+            font-size: 24px;
+        }
+
+        .search-bar {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+
+        #bookNameInput {
+            flex: 1;
+            min-width: 200px;
+            padding: 12px 15px;
+            border: 1px solid #e4e7ed;
+            border-radius: 6px;
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        #bookNameInput:focus {
+            border-color: #409eff;
+        }
+
+        #searchBtn {
+            padding: 12px 20px;
+            background-color: #409eff;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        #searchBtn:hover {
+            background-color: #337ecc;
+        }
+
+        .result-container {
+            min-height: 100px;
+        }
+
+        .result-list {
+            list-style: none;
+        }
+
+        .result-item {
+            padding: 15px;
+            border-bottom: 1px solid #f0f2f5;
+            color: #333;
+            transition: background-color 0.3s;
+        }
+
+        .result-item:hover {
+            background-color: #f8f9fa;
+        }
+
+        .result-item strong {
+            color: #409eff;
+        }
+
+        .no-result {
+            text-align: center;
+            color: #999;
+            padding: 30px 0;
+            font-size: 14px;
+        }
+
+        /* 全部书名文字展示样式 */
+        .all-book-names {
+            padding: 15px;
+            color: #333;
+            font-size: 15px;
+            line-height: 1.8;
+        }
+
+        .all-book-names strong {
+            color: #409eff;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    
+
+
+
+      
+        <!-- 搜索栏 -->
+        <div class="search-bar">
+            <input type="text" id="bookNameInput" placeholder="关键词...">
+            <button id="searchBtn">书名</button>
+        </div>
+        <!-- 结果展示区域 -->
+        <div class="result-container" id="resultContainer"></div>
+    </div>
+
+    <script>
+     
+        // 数据
+        const bookData = [
+            { bookName:"镖人2《镖人》第二册轰动上市！漫画大师高桥留美子、藤泽亨，知名作家马伯庸，知名动画导演田晓鹏鼎力推荐！）.mobi" },
+  { bookName:"镜狱岛事件.mobi" },
+  { bookName:"镜花缘.mobi" },
+  { bookName:"间谍课：黑色宣言.mobi" },
+  { bookName:"阅读变现.mobi" },
+  { bookName:"阅读是砍向我们内心冰封大海的尽头.mobi" },
+  { bookName:"阴谋与爱情.mobi" },
+  { bookName:"阿德勒积极心理学.mobi" },
+  { bookName:"阿甘正传.mobi" },
+  { bookName:"隐性逻辑：教你快速切换思考方式.mobi" },
+  { bookName:"隐藏的意识.mobi" },
+  { bookName:"雅克和他的主人 .mobi" },
+  { bookName:"雨果作品.mobi" },
+  { bookName:"雪国之劫.mobi" },
+  { bookName:"雪落香杉树 - [美] 戴维·伽特森.mobi" },
+  { bookName:"零秒工作.mobi" },
+  { bookName:"青鸟故事集（用温情与敬意诠释历史，以智力和想象解密往事） - 李敬泽.mobi" },
+  { bookName:"非理性的人 （译文经典）.mobi" },
+  { bookName:"革命之夏：美国独立的起源【甲骨文丛书】.mobi" },
+  { bookName:"风筝.mobi" },
+  { bookName:"香山帮.mobi" },
+  { bookName:"高尔基三部曲（全3册）童年在人间我的大学.mobi" },
+  { bookName:"高手：超越普通人的高效时间管理法.mobi" },
+  { bookName:"高效能人士的七个习惯.mobi" },
+  { bookName:"魅力史：激发欲望与视觉征服的艺术.mobi" },
+  { bookName:"魔鬼经济学.mobi" },
+  { bookName:"魔鬼聊天术.mobi" },
+  { bookName:"鱼什么都知道.mobi" },
+  { bookName:"鸦雀无声：双生镇杀人事件.mobi" },
+  { bookName:"黑暗的左手.mobi" },
+  { bookName:"黑洞不是黑的 霍金BBC里斯演.mobi" },
+  { bookName:"黑王子.mobi" },
+        ];
+
+        // 格式2：纯字符串数组（更简洁，若需简化可替换上方bookData，同时修改下方对应代码即可）
+        // const bookData = ["红楼梦", "西游记","];
+
+        // 2. 获取DOM元素
+        const bookNameInput = document.getElementById('bookNameInput');
+        const searchBtn = document.getElementById('searchBtn');
+        const resultContainer = document.getElementById('resultContainer');
+
+        // 3. 核心书名搜索函数
+        function bookNameSearch() {
+            // 获取书名关键词（去空格+转小写，不区分大小写搜索）
+            const keyword = bookNameInput.value.trim().toLowerCase();
+            // 清空原有结果
+            resultContainer.innerHTML = '';
+
+            let filteredBooks = [];
+
+            // 关键词为空时，获取全部书名数据
+            if (!keyword) {
+                filteredBooks = [...bookData];
+                // 传递关键词状态，用于渲染判断
+                renderBookResult(filteredBooks, keyword);
+                return;
+            }
+
+            // 关键词不为空时，模糊匹配书名（适配对象格式的bookData）
+            filteredBooks = bookData.filter(book => {
+                const bookName = book.bookName.toLowerCase();
+                return bookName.includes(keyword);
+            });
+
+            // 若使用纯字符串格式的bookData，替换上方过滤代码为：
+            // filteredBooks = bookData.filter(bookName => {
+            //     return bookName.toLowerCase().includes(keyword);
+            // });
+
+            // 渲染结果
+            renderBookResult(filteredBooks, keyword);
+        }
+
+        // 4. 渲染书籍结果函数（根据关键词状态切换展示形式）
+        function renderBookResult(data, keyword) {
+            // 关键词为空（展示全部书名文字）
+            if (!keyword) {
+                const allBooksDiv = document.createElement('div');
+                allBooksDiv.className = 'all-book-names';
+                // 提取所有书名，用「、」分隔拼接成纯文字（适配对象格式bookData）
+                const allBookNamesText = data.map(book => book.bookName).join('、');
+                
+                // 若使用纯字符串格式的bookData，替换上方代码为：
+                // const allBookNamesText = data.join('、');
+
+                allBooksDiv.innerHTML = `<strong>全部书名：</strong>${allBookNamesText}`;
+                resultContainer.appendChild(allBooksDiv);
+                return;
+            }
+
+            // 关键词不为空（无匹配结果）
+            if (data.length === 0) {
+                const noResult = document.createElement('div');
+                noResult.className = 'no-result';
+                noResult.textContent = '未找到匹配的书籍，请更换书名关键词重试';
+                resultContainer.appendChild(noResult);
+                return;
+            }
+
+            // 关键词不为空（有匹配结果，列表展示）
+            const resultList = document.createElement('ul');
+            resultList.className = 'result-list';
+
+            // 适配对象格式bookData
+            data.forEach(book => {
+                const listItem = document.createElement('li');
+                listItem.className = 'result-item';
+                listItem.innerHTML = `<strong>书名：</strong>${book.bookName}`;
+                resultList.appendChild(listItem);
+            });
+
+            // 若使用纯字符串格式的bookData，替换上方循环代码为：
+            // data.forEach(bookName => {
+            //     const listItem = document.createElement('li');
+            //     listItem.className = 'result-item';
+            //     listItem.innerHTML = `<strong>书名：</strong>${bookName}`;
+            //     resultList.appendChild(listItem);
+            // });
+
+            resultContainer.appendChild(resultList);
+        }
+
+        // 5. 绑定事件
+        searchBtn.addEventListener('click', bookNameSearch);
+        bookNameInput.addEventListener('input', bookNameSearch);
+        bookNameInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                bookNameSearch();
+            }
+        });
+
+        // 6. 页面加载自动显示全部书名文字
+        window.addEventListener('load', bookNameSearch);
+    </script>
+</body>
+</html>
