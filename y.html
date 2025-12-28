@@ -4,11 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>He书签</title>
-<link rel="icon" type="image/x-icon" href="https://gitee.com/yhe3/yi/raw/master/w/he.ico">
-  <link rel="apple-touch-icon" href="https://gitee.com/yhe3/yi/raw/master/w/he.ico">
+<link rel="icon" type="image/x-icon" href="./https://gitee.com/yhe3/yi/raw/master/w/he.ico"><br/>  <link rel="apple-touch-icon" href="https://gitee.com/yhe3/yi/raw/master/w/he.ico">
     <!-- 引入Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    
+
     <!-- 自定义配置 -->
     <script>
         tailwind.config = {
@@ -27,14 +26,14 @@
             }
         }
     </script>
-    
+
     <style type="text/tailwindcss">
         @layer utilities {
             .content-auto {
                 content-visibility: auto;
             }
             .bookmark-card {
-                @apply bg-white/30 backdrop-blur-md rounded-lg p-3 shadow-lg hover:shadow-xl transition-all duration-150 hover:-translate-y-1 border border-gray-200/50 h-full;
+                @apply bg-white/80 backdrop-blur-md rounded-lg p-3 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border border-gray-200/50 h-full;
             }
             .search-input {
                 @apply w-full py-3 px-4 rounded-full bg-white/80 backdrop-blur-md border border-gray-200/50 focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all duration-300 placeholder:text-gray-500 text-dark pr-12;
@@ -48,31 +47,27 @@
 <body class="font-inter min-h-screen flex flex-col items-center justify-start p-4 md:p-8 bg-gradient-to-br from-light to-gray-200 overflow-x-hidden">
     <!-- 页面容器 -->
     <div class="w-full max-w-7xl z-10">
-    
-            
-            
-            <!-- 搜索框 -->
-            <div class="max-w-2xl mx-auto relative">
-                <input 
-                    type="text" 
-                    id="searchInput" 
-                    class="search-input" 
-                    placeholder="找书签（名/描述）"
-                    autocomplete="off"
-                >
-                <!-- 清空按钮 -->
-                <button id="clearSearch" class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors duration-200 hidden">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                    </svg>
-                </button>
-                <!-- 搜索结果统计 -->
-                <div id="searchCount" class="absolute left-4 bottom-1 text-xs text-gray-500 hidden">找到 <span id="resultCount">0</span> 个结果</div>
-            </div>
-        </header>
+        <!-- 仅保留搜索框，移除排序按钮 -->
+        <div class="max-w-2xl mx-auto relative">
+            <input 
+                type="text" 
+                id="searchInput" 
+                class="search-input" 
+                placeholder="搜索书签（名称/描述）"
+                autocomplete="off"
+            >
+            <!-- 清空按钮 -->
+            <button id="clearSearch" class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors duration-200 hidden">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+            <!-- 搜索结果统计 -->
+            <div id="searchCount" class="absolute left-4 bottom-1 text-xs text-gray-500 hidden">找到 <span id="resultCount">0</span> 个结果</div>
+        </div>
 
-        <!-- 书签容器：响应式六列 -->
-        <div id="bookmarkContainer" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+        <!-- 书签容器：响应式六列布局 -->
+        <div id="bookmarkContainer" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mt-6">
         </div>
 
         <!-- 空状态提示 -->
@@ -92,13 +87,13 @@
 
     <!-- 页脚 -->
     <footer class="mt-auto py-6 text-center text-gray-600 w-full z-10">
-        <p>超级Yi启 &copy; 2025 | 12/19体验</p>
+        <p>超级书签 &copy; 2025 | 12/17体验</p>
     </footer>
 
     <script>
-        // 书签
+        // 书签数据
         const bookmarks = [
-            { name: "qhe", url: "https://109guo.github.io/9guo/qhe.html", color: "primary", desc: "109guo" },
+                        { name: "qhe", url: "https://109guo.github.io/9guo/qhe.html", color: "primary", desc: "109guo" },
             { name: "书名txt", url: "https://h-9e.github.io/Book/txt.html", color: "dark", desc: "电脑本地文件txt格式" },
            { name: "书名epub", url: "https://h-9e.github.io/Book/epub.html", color: "dark", desc: "电脑本地文件epub格式" },
            { name: "书名PDF", url: "https://h-9e.github.io/Book/pdf.html", color: "dark", desc: "电脑本地文件pdf格式" },
@@ -123,16 +118,18 @@
 
         // 初始化页面
         document.addEventListener('DOMContentLoaded', () => {
-            renderBookmarks(bookmarks);
-            
+            // 初始化自动按名称正序排序并渲染（无手动按钮，静默执行）
+            const sortedBookmarks = sortBookmarksByName(bookmarks, 'asc');
+            renderBookmarks(sortedBookmarks);
+
             // 搜索相关事件监听
             const searchInput = document.getElementById('searchInput');
             const clearSearchBtn = document.getElementById('clearSearch');
             const resetSearchBtn = document.getElementById('resetSearch');
-            
-            // 输入搜索
+
+            // 输入防抖搜索
             searchInput.addEventListener('input', debounce(searchBookmarks, 300));
-            
+
             // 回车搜索
             searchInput.addEventListener('keydown', (e) => {
                 if (e.key === 'Enter') {
@@ -140,7 +137,7 @@
                     searchInput.blur();
                 }
             });
-            
+
             // 清空搜索按钮
             clearSearchBtn.addEventListener('click', () => {
                 searchInput.value = '';
@@ -148,14 +145,14 @@
                 clearSearchBtn.classList.add('hidden');
                 document.getElementById('searchCount').classList.add('hidden');
             });
-            
+
             // 空状态重置搜索
             resetSearchBtn.addEventListener('click', () => {
                 searchInput.value = '';
                 searchBookmarks();
                 searchInput.focus();
             });
-            
+
             // 监听搜索框值变化显示/隐藏清空按钮
             searchInput.addEventListener('input', () => {
                 if (searchInput.value.trim()) {
@@ -166,7 +163,7 @@
                     document.getElementById('searchCount').classList.add('hidden');
                 }
             });
-            
+
             // 键盘导航支持
             document.addEventListener('keydown', (e) => {
                 // Ctrl/K 聚焦搜索框
@@ -177,6 +174,29 @@
                 }
             });
         });
+
+        // 核心功能：按书签名称排序（支持中文拼音排序、英文字母排序，静默执行）
+        function sortBookmarksByName(bookmarkList, order = 'asc') {
+            // 复制原数组，避免修改原始数据
+            const sortedList = [...bookmarkList];
+            
+            sortedList.sort((a, b) => {
+                // 获取书签名称，统一转为字符串
+                const nameA = a.name || '';
+                const nameB = b.name || '';
+
+                // 利用 localeCompare 实现中文拼音排序（兼容英文）
+                const compareResult = nameA.localeCompare(nameB, 'zh-CN', { 
+                    sensitivity: 'accent',
+                    caseFirst: 'upper'
+                });
+
+                // 正序（asc）返回原始比较结果，倒序（desc）返回反向结果
+                return order === 'asc' ? compareResult : -compareResult;
+            });
+
+            return sortedList;
+        }
 
         // 防抖函数
         function debounce(func, wait) {
@@ -190,7 +210,7 @@
         // 高亮搜索关键词
         function highlightKeyword(text, keyword) {
             if (!keyword || !text) return text;
-            
+
             const regex = new RegExp(`(${keyword})`, 'gi');
             return text.replace(regex, '<span class="search-highlight">$1</span>');
         }
@@ -201,7 +221,7 @@
             const emptyState = document.getElementById('emptyState');
             const resultCount = document.getElementById('resultCount');
             const searchCount = document.getElementById('searchCount');
-            
+
             // 清空容器
             container.innerHTML = '';
 
@@ -214,7 +234,7 @@
 
             container.classList.remove('hidden');
             emptyState.classList.add('hidden');
-            
+
             // 更新搜索结果计数
             resultCount.textContent = bookmarkList.length;
             if (document.getElementById('searchInput').value.trim()) {
@@ -223,57 +243,61 @@
 
             // 生成六列布局的书签卡片
             const searchTerm = document.getElementById('searchInput').value.trim().toLowerCase();
-            
+
             bookmarkList.forEach(bookmark => {
                 const card = document.createElement('a');
                 card.href = bookmark.url;
                 card.target = '_blank';
                 card.className = 'bookmark-card group flex flex-col justify-center';
-                
+
                 // 高亮匹配的关键词
                 const highlightedName = highlightKeyword(bookmark.name, searchTerm);
                 const highlightedDesc = highlightKeyword(bookmark.desc, searchTerm);
-                
+
                 card.innerHTML = `
                     <div class="flex-1">
                         <h3 class="font-semibold text-base text-dark group-hover:text-${bookmark.color} transition-colors duration-300">${highlightedName}</h3>
                         <p class="text-gray-600 text-xs line-clamp-1">${highlightedDesc}</p>
                     </div>
                 `;
-                
+
                 container.appendChild(card);
             });
         }
 
-        // 搜索书签
+        // 搜索书签（搜索后自动静默按名称排序，无手动操作）
         function searchBookmarks() {
             const searchInput = document.getElementById('searchInput');
             const searchTerm = searchInput.value.trim().toLowerCase();
-            
-            // 清空搜索时显示全部书签
+
+            // 清空搜索时，自动按名称正序渲染全部书签
             if (!searchTerm) {
-                renderBookmarks(bookmarks);
+                const sortedBookmarks = sortBookmarksByName(bookmarks, 'asc');
+                renderBookmarks(sortedBookmarks);
                 document.getElementById('clearSearch').classList.add('hidden');
                 document.getElementById('searchCount').classList.add('hidden');
                 return;
             }
 
-            // 筛选匹配的书签（支持名称、描述、URL多字段匹配）
+            // 1. 筛选匹配的书签（支持名称、描述、URL多字段匹配）
             const filteredBookmarks = bookmarks.filter(bookmark => 
                 bookmark.name.toLowerCase().includes(searchTerm) || 
                 bookmark.desc.toLowerCase().includes(searchTerm) ||
                 bookmark.url.toLowerCase().includes(searchTerm)
             );
 
-            renderBookmarks(filteredBookmarks);
-            
+            // 2. 筛选后自动静默按名称正序排序（无需手动点击按钮）
+            const sortedFilteredBookmarks = sortBookmarksByName(filteredBookmarks, 'asc');
+            renderBookmarks(sortedFilteredBookmarks);
+
             // 显示清空按钮和结果计数
             document.getElementById('clearSearch').classList.remove('hidden');
             document.getElementById('searchCount').classList.remove('hidden');
-            
+
             // 搜索后滚动到书签区域
             document.getElementById('bookmarkContainer').scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
     </script>
 </body>
 </html>
+
